@@ -9,5 +9,11 @@
     border-width: 2px;
     padding: 5px 5px 5px 5px;
     color: black;
+    text-align: center;
+}
 
+.social-btn:hover{
+    background-color: gray;
+    color: white;
+    text-decoration: none;
 }
