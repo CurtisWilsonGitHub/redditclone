@@ -9,6 +9,8 @@
 require 'random_data'
 
 #create Posts
+Post.find_or_create_by!(title:"First Post Title", body:"First Post Body")
+
 50.times do
     Post.create!(
         title: RandomData.random_sentence,
@@ -16,10 +18,12 @@ require 'random_data'
     )
 end
 
+
 posts = Post.all
 
 #Create Comments
 
+Comment.find_or_create_by!( body:"First Comment Body")
 100.times do
     Comment.create!(
         post: posts.sample,
