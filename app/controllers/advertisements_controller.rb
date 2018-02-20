@@ -12,9 +12,12 @@ class AdvertisementsController < ApplicationController
   end
 
   def create
+    puts Advertisement.count
     @advertisement = Advertisement.new
     @advertisement.title = params[:advertisement][:title]
     @advertisement.copy = params[:advertisement][:copy]
     @advertisement.price = params[:advertisement][:price]
+    puts @advertisement.title
+    puts Advertisement.count
   end
 end
