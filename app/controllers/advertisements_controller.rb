@@ -12,12 +12,18 @@ class AdvertisementsController < ApplicationController
   end
 
   def create
-    puts Advertisement.count
+    
     @advertisement = Advertisement.new
     @advertisement.title = params[:advertisement][:title]
     @advertisement.copy = params[:advertisement][:copy]
     @advertisement.price = params[:advertisement][:price]
-    puts @advertisement.title
-    puts Advertisement.count
+  
+    if @advertisement.save
+      flash[:notice] = "Advertisement was saved."
+      redirect_to @advertisement
+    else
+      flash.new[:alert] = "There was an error saving the post. Please try again."
+      render :new
+    end
   end
 end
