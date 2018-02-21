@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
 
-  let(:my_question) {Question.create!(title: RandomData.random_sentence, body: RandomData.random_paragraph, resolved: false)}
+  let(:my_question) {Question.create!(title: RandomData.random_sentence, body: RandomData.random_paragraph)}
 
   describe "GET #index" do
     it "returns http success" do
@@ -35,16 +35,16 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe "POST create" do
     it "increases the number of QUESTION by 1" do
-      expect{ post :create, params: {question: { title:"Test title", body:"Test body", resolved: false}}}.to change(Question,:count).by(1)
+      expect{ post :create, params: {question: { title:"Test title", body:"Test body"}}}.to change(Question,:count).by(1)
     end
 
     it "assigns the new post to @post" do
-      post :create, params: { question: { title:RandomData.random_sentence, body:RandomData.random_paragraph, resolved: false}}
+      post :create, params: { question: { title:RandomData.random_sentence, body:RandomData.random_paragraph}}
       expect(assigns(:question)).to eq Question.last
     end 
 
     it "redirects to the new post" do
-      post :create, params: {question: { title:RandomData.random_sentence, body:RandomData.random_paragraph, resolved: false}}
+      post :create, params: {question: { title:RandomData.random_sentence, body:RandomData.random_paragraph}}
       expect(response).to redirect_to Question.last
     end
   end
@@ -106,6 +106,19 @@ RSpec.describe QuestionsController, type: :controller do
 
       put :update, params: {id: my_question.id, question: {title:new_title, body:new_body}}
       expect(response).to redirect_to my_question
+    end
+  end
+
+  describe "DELETE destroy" do
+    it "deletes the question" do
+      delete :destroy, params: {id: my_question.id}
+      count = Question.where({id:my_question.id}).size
+      expect(count).to eq 0
+    end
+
+    it "redirects to posts index" do
+      delete :destroy, params: {id: my_question.id}
+      expect(response).to redirect_to posts_path
     end
   end
   
