@@ -52,9 +52,9 @@ RSpec.describe QuestionsController, type: :controller do
       post :create, params: {question: { title:RandomData.random_sentence, body:RandomData.random_paragraph}}
 
       new_question = assigns(:question)
-      expect(new_question.id).to_not be_nil
-      expect(new_question.title).to_not be_nil
-      expect(new_question.body).to_not be_nil
+      expect(new_question.id).not_to eql('')
+      expect(new_question.title).not_to eql('')
+      expect(new_question.body).not_to eql('')
       
     end
   end
