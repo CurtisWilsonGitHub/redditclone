@@ -47,6 +47,16 @@ RSpec.describe QuestionsController, type: :controller do
       post :create, params: {question: { title:RandomData.random_sentence, body:RandomData.random_paragraph}}
       expect(response).to redirect_to Question.last
     end
+
+    it "checks for valid params entry" do
+      post :create, params: {question: { title:RandomData.random_sentence, body:RandomData.random_paragraph}}
+
+      new_question = assigns(:question)
+      expect(new_question.id).to_not be_nil
+      expect(new_question.title).to_not be_nil
+      expect(new_question.body).to_not be_nil
+      
+    end
   end
 
   describe "GET show" do
@@ -118,7 +128,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     it "redirects to posts index" do
       delete :destroy, params: {id: my_question.id}
-      expect(response).to redirect_to posts_path
+      expect(response).to redirect_to questions_path
     end
   end
   

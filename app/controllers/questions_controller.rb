@@ -19,12 +19,21 @@ class QuestionsController < ApplicationController
     @question.resolved = false
    
 
-    if @question.save
-      flash[:notice] = "Question was saved."
-      redirect_to @question
-    else
-      flash.new[:alert] = "There was an error saving the question. Please try again."
+    if @question.title.nil? || @question.body.nil? || @question.title.empty? || @question.body.empty?
+
+      flash[:notice] = "Please enter a title and a question."
       render :new
+  
+    else
+
+      if @question.save
+        flash[:notice] = "Question was created."
+        redirect_to @question
+      else
+        flash.now[:alert] = "There was an error saving the question. Please try again."
+        render :new
+      end
+     
     end
   end
 
@@ -39,13 +48,23 @@ class QuestionsController < ApplicationController
      @question.body = params[:question][:body]
      @question.resolved = params[:question][:resolved]
 
-     if @question.save
-       flash[:notice] = "Question was updated."
-       redirect_to @question
-     else
-       flash.now[:alert] = "There was an error saving the question. Please try again."
-       render :edit
-     end
+    if @question.title.nil? || @question.body.nil? || @question.title.empty? || @question.body.empty?
+
+      flash[:notice] = "Please enter a title and a question."
+      render :edit
+  
+    else
+
+      if @question.save
+        flash[:notice] = "Question was updated."
+        redirect_to @question
+      else
+        flash.now[:alert] = "There was an error saving the question. Please try again."
+        render :edit
+      end
+     
+    end
+
    end 
 
   def destroy
