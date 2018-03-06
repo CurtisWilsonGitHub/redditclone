@@ -1,6 +1,7 @@
 class User < ApplicationRecord
 
     before_save {self.email = email.downcase if email.present? }
+    before_save {self.name= name.split.map(&:capitalize).join(' ') if name.present?} 
 
     validates :name, length: {minimum: 1, maximumn: 100}, presence: true
 

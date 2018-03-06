@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:user) {User.create!(name: "Redditclone User", email: "reddictcloneuser@redditclone.com", password: "password")}
+  let(:user) {User.create!(name: "redditclone user", email: "reddictcloneuser@redditclone.com", password: "password")}
 
   #shoulda tests for name
   it { is_expected.to validate_presence_of(:name)}
@@ -36,4 +36,12 @@ RSpec.describe User, type: :model do
       expect(user_with_invalid_email).to_not be_valid
     end
   end
+
+  describe "user name capitalized" do
+    capitalized_name = "Redditclone User"
+    it "should capitalize first letter of name" do
+      expect(user.name).to eq(capitalized_name) 
+    end
+  end
+    
 end
