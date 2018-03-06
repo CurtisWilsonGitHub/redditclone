@@ -44,6 +44,8 @@ gem 'jquery-rails'
  
  gem 'bootstrap-sass'
 
+ # Used for encrypting passwords
+gem 'bcrypt'
 
 
  group :development do
