@@ -13,6 +13,7 @@ class UsersController < ApplicationController
 
         if @user.save
             flash[:notice] = "Welcome to Redditclone #{@user.name}"
+            create_session(@user)
             redirect_to root_path
         else
             flash.now[:alert] = "There was an error creating y our account. Please try again later"
