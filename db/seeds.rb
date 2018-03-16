@@ -11,6 +11,18 @@ require 'random_data'
 #create Posts
 Post.find_or_create_by!(title:"First Post Title", body:"First Post Body")
 
+
+#creates users
+ 5.times do
+    User.create!(
+        name: RandomData.random_name,
+        email: RandomData.random_email,
+        password: RandomData.random_sentence
+    )
+ end
+ users = User.all
+
+#creates topics
 15.times do
     Topic.create!(
         name: RandomData.random_sentence,
@@ -19,20 +31,18 @@ Post.find_or_create_by!(title:"First Post Title", body:"First Post Body")
 end
 topics = Topic.all
 
-
+#creates posts
 50.times do
     Post.create!(
+        user: users.sample,
         topic: topics.sample,
         title: RandomData.random_sentence,
         body: RandomData.random_paragraph
     )
 end
-
-
 posts = Post.all
 
 #Create Comments
-
 Comment.find_or_create_by!( body:"First Comment Body")
 100.times do
     Comment.create!(
@@ -40,10 +50,16 @@ Comment.find_or_create_by!( body:"First Comment Body")
         body: RandomData.random_paragraph
     )
 end
+comments = Comment.all
 
-
+user = User.first
+user.update_attributes!(
+    email: 'curtiswemail@gmail.com',
+    password: 'helloworld'
+)
 
 puts "Seed finished"
+puts "#{User.count} users created"
 puts "#{Topic.count} topics created"
 puts "#{Post.count} posts created"
 puts "#{Comment.count} comments created"
