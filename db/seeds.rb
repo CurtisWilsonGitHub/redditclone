@@ -52,9 +52,18 @@ Comment.find_or_create_by!( body:"First Comment Body")
 end
 comments = Comment.all
 
-user = User.first
-user.update_attributes!(
-    email: 'curtiswemail@gmail.com',
+#create a admin
+admin = User.create!(
+    name: "Admin User",
+    email: "admin@example.com",
+    password: 'helloworld',
+    role: 'admin'
+)
+
+#create a member
+member = User.create!(
+    name: 'Member User',
+    email: 'member@example.com',
     password: 'helloworld'
 )
 
