@@ -18,11 +18,16 @@ class TopicsController < ApplicationController
     def create
         @topic = Topic.new(topic_params)
 
-        if @topic.save
-            redirect_to @topic, notice: "Topic was saved successfully."
+        if current_user.moderator?
+           flash.now[:alert] = "You do not have access to create topics"
+           redirect_to @topic
         else
-            flash.now[:alert] = "Error creating topic"
-            render :new
+            if @topic.save
+                redirect_to @topic, notice: "Topic was saved successfully."
+            else
+                flash.now[:alert] = "Error creating topic"
+                render :new
+            end
         end
     end
 
@@ -47,12 +52,17 @@ class TopicsController < ApplicationController
     def destroy
         @topic = Topic.find(params[:id])
 
-        if @topic.destroy
-            flash[:notice] = "\"#{@topic.name}\" was deleted succesfully."
-            redirect_to topics_path
-        else
-            flash.now[:alert] = "There was an error deleting the post"
+        if current_user.moderator?
+            flash.now[:alert] = "You do not have access to destroy topics"
             render :show
+        else
+            if @topic.destroy
+                flash[:notice] = "\"#{@topic.name}\" was deleted succesfully."
+                redirect_to topics_path
+            else
+                flash.now[:alert] = "There was an error deleting the post"
+                render :show
+            end
         end
     end
 
