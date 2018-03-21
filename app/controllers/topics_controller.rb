@@ -1,7 +1,11 @@
 class TopicsController < ApplicationController
 
     before_action :require_sign_in, except: [:index, :show]
-    before_action :authorize_user, except: [:index, :show]
+    before_action :authorize_admin, only: [:create, :destroy, :new]
+    before_action :authorize_admin_moderator, only: [:edit, :update]
+
+
+    
 
     def index
         @topics = Topic.all 
@@ -18,17 +22,14 @@ class TopicsController < ApplicationController
     def create
         @topic = Topic.new(topic_params)
 
-        if current_user.moderator?
-           flash.now[:alert] = "You do not have access to create topics"
-           redirect_to @topic
+    
+        if @topic.save
+            redirect_to @topic, notice: "Topic was saved successfully."
         else
-            if @topic.save
-                redirect_to @topic, notice: "Topic was saved successfully."
-            else
-                flash.now[:alert] = "Error creating topic"
-                render :new
-            end
+            flash.now[:alert] = "Error creating topic"
+            render :new
         end
+
     end
 
     def edit
@@ -51,19 +52,15 @@ class TopicsController < ApplicationController
 
     def destroy
         @topic = Topic.find(params[:id])
-
-        if current_user.moderator?
-            flash.now[:alert] = "You do not have access to destroy topics"
-            render :show
+        
+        if @topic.destroy
+            flash[:notice] = "\"#{@topic.name}\" was deleted succesfully."
+            redirect_to topics_path
         else
-            if @topic.destroy
-                flash[:notice] = "\"#{@topic.name}\" was deleted succesfully."
-                redirect_to topics_path
-            else
-                flash.now[:alert] = "There was an error deleting the post"
-                render :show
-            end
+            flash.now[:alert] = "There was an error deleting the post"
+            render :show
         end
+        
     end
 
     private
@@ -71,11 +68,17 @@ class TopicsController < ApplicationController
         params.require(:topic).permit(:name, :description, :public)
     end
 
-    def authorize_user
-        unless current_user.admin?
-            flash[:alert] = "You must be an admin to do that."
+    def authorize_admin
+        unless current_user.admin? 
+            flash[:alert] = "You're not aurthorize to do that."
             redirect_to topics_path
         end
     end
 
+    def authorize_admin_moderator
+        unless current_user.admin? || current_user.moderator?
+            flash[:alert] = "You're not aurthorize to do that."
+            redirect_to topics_path
+        end
+    end
 end

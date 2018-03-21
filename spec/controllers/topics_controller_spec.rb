@@ -323,19 +323,19 @@ RSpec.describe TopicsController, type: :controller do
     end
 
     describe "GET edit" do
-      it "returns http redirect" do
+      it "returns http success" do
         get :edit, params: { id: my_topic.id }
-        expect(response).to redirect_to(topics_path)
+        expect(response).to have_http_status(:success)
       end
     end
 
     describe "PUT update" do
-      it "returns http redirect" do
+      it "returns http success and redirects to my_topic" do
         new_name = RandomData.random_sentence
         new_description = RandomData.random_paragraph
 
         put :update, params: { id: my_topic.id, topic: { name: new_name, description: new_description } }
-        expect(response).to redirect_to(topics_path)
+        expect(response).to redirect_to(my_topic)
       end
     end
 
