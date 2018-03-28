@@ -44,6 +44,9 @@ gem 'jquery-rails'
  
  gem 'bootstrap-sass'
 
+ gem 'figaro', '1.0
+ '
+
  # Used for encrypting passwords
 gem 'bcrypt'
 
