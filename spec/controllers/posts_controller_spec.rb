@@ -6,9 +6,10 @@ include SessionsHelper
 
 RSpec.describe PostsController, type: :controller do
 
-  let(:my_user) { User.create!(name: "Redditclone User", email: "notaemail@email.com", password: "helloworld")}
-  let(:my_topic) { Topic.create!(name:  RandomData.random_sentence, description: RandomData.random_paragraph) }
-  let(:my_post) { my_topic.posts.create!(title: RandomData.random_sentence, body: RandomData.random_paragraph, user: my_user) }
+  let(:my_user) { create(:user) }
+  let(:my_topic) { create(:topic) }
+  let(:other_user) { create(:create) }
+  let(:my_post) { create(:post, topic: my_topic, user: my_user) }
 
   context "guest user" do
 
