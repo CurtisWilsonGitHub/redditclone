@@ -5,6 +5,7 @@ RSpec.describe FavoritesController, type: :controller do
   let(:my_user) { create(:user) }
   let(:my_topic) { create(:topic) }
   let(:my_post) { create(:post, topic:my_topic, user: my_user) }
+  let(:my_favorite) { create( :favorite, post: my_post, user: my_user ) }
 
   context 'guest user' do
     describe 'POST create' do
@@ -58,6 +59,13 @@ RSpec.describe FavoritesController, type: :controller do
           expect( my_user.favorites.find_by_post_id(my_post.id) ).to be_nil
         end
     end
+
+    describe "GET show" do
+      it "returns http success" do
+        get :show, params: {post_id: my_post.id, id: my_favorite.id }
+        expect(response).to have_http_status(:success)
+      end
+    end 
   end
 
 

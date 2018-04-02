@@ -20,6 +20,25 @@
 </div>
 
 <h2> Posts </h2>
-<%= render @user.posts %>
-<h2>Comments</h2>
-<%= render @user.comments %>
+<% if has_posts_history %>
+    <%= render @user.posts %>
+<% else %>
+        <%= "#{@user.name} has not submitted any posts yet." %>
+<% end %>
+
+<h2> Comments </h2>
+<% if has_comments_history %>
+    <%= render @user.comments %>
+<% else %>
+    <%= "#{@user.name} has not submitted any comments yet." %>
+<% end %>
+
+<h2> Favorites </h2>
+<% if has_favorites_history %>
+    <% @user.favorites.each do |favorite| %>
+        <%= favorite.post.title %> <%= image_tag favorite.post.user.avatar_url(24) %> favorited <%= time_ago_in_words(favorite.created_at) %> ago. Votes: <%= favorite.post.points %> Comments: <%= favorite.post.comments.count %>
+    <% end %>
+<% else %>
+    <%= "#{@user.name} has not favorited any comments yet." %>
+<% end %>
+
